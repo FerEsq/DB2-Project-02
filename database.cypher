@@ -97,6 +97,59 @@ CREATE (f:Facultad {
 SET f.carreras = [carrera IN split(row.carreras, ';') | trim(carrera)]
 RETURN f;
 
+//Importar salones aulas
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/FerEsq/DB2-Project-02/main/data/nodes/salonesAulas.csv' AS row
+CREATE (s:Salon:Aula {
+    codigo: row.codigo,
+    capacidad: toInteger(row.capacidad),
+    disponible: row.disponible = 'true',
+    edificio: row.edificio,
+    nivel: toInteger(row.nivel)
+})
+RETURN s;
 
+//Importar salones laboratorios
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/FerEsq/DB2-Project-02/main/data/nodes/salonesLaboratorios.csv' AS row
+CREATE (s:Salon:Laboratorio {
+    codigo: row.codigo,
+    capacidad: toInteger(row.capacidad),
+    disponible: row.disponible = 'true',
+    edificio: row.edificio,
+    nivel: toInteger(row.nivel)
+})
+RETURN s;
+
+//Importar clubes artisticos
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/FerEsq/DB2-Project-02/main/data/nodes/clubesArtisticos.csv' AS row
+CREATE (c:Club:Artistico {
+    nombre: row.nombre,
+    miembros: toInteger(row.miembros),
+    presupuesto: toInteger(row.presupuesto),
+    fechaFundacion: date(row.fechaFundacion)
+})
+SET c.dias = [dia IN split(row.dias, ';') | trim(dia)]
+RETURN c;
+
+//Importar clubes deportivos
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/FerEsq/DB2-Project-02/main/data/nodes/clubesDeportivos.csv' AS row
+CREATE (c:Club:Deportivo {
+    nombre: row.nombre,
+    miembros: toInteger(row.miembros),
+    presupuesto: toInteger(row.presupuesto),
+    fechaFundacion: date(row.fechaFundacion)
+})
+SET c.dias = [dia IN split(row.dias, ';') | trim(dia)]
+RETURN c;
+
+//Importar clubes academicos
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/FerEsq/DB2-Project-02/main/data/nodes/clubesAcademicos.csv' AS row
+CREATE (c:Club:Academico {
+    nombre: row.nombre,
+    miembros: toInteger(row.miembros),
+    presupuesto: toInteger(row.presupuesto),
+    fechaFundacion: date(row.fechaFundacion)
+})
+SET c.dias = [dia IN split(row.dias, ';') | trim(dia)]
+RETURN c;
 
 
