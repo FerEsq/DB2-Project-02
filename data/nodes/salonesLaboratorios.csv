@@ -1,4 +1,4 @@
-id,capacidad,disponible,edificio,nivel
+codigo,capacidad,disponible,edificio,nivel
 A-321,33,false,A,3
 A-714,32,false,A,7
 B-716,25,true,B,7
