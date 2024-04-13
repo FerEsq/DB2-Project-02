@@ -92,4 +92,4 @@ def generator(n, filename):
 
     print("Se generaron {} cursos".format(n))
 
-generator(100, 'data/cursosHibridos.csv')
+generator(100, 'data/nodes/cursosHibridos.csv')

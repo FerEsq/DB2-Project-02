@@ -39,4 +39,4 @@ def generator(n, filename):
 
     print("Se generaron {} usuarios".format(n))
 
-generator(500, 'data/catedraticos.csv')
+generator(500, 'data/nodes/catedraticos.csv')

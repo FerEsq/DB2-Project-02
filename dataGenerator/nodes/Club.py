@@ -48,4 +48,4 @@ def generator(n, filename):
 
     print("Se generaron {} clubes".format(n))
 
-generator(5, 'data/clubesAcademicos.csv')
+generator(5, 'data/nodes/clubesAcademicos.csv')

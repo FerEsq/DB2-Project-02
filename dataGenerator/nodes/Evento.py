@@ -41,4 +41,4 @@ def generator(n, filename):
 
     print("Se generaron {} eventos".format(n))
 
-generator(60, 'data/eventosHibridos.csv')
+generator(60, 'data/nodes/eventosHibridos.csv')

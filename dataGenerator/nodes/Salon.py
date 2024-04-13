@@ -47,4 +47,4 @@ def generator(n, filename):
 
     print("Se generaron {} salones".format(n))
 
-generator(30, 'data/salonesLaboratorios.csv')
+generator(30, 'data/nodes/salonesLaboratorios.csv')
