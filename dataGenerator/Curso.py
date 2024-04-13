@@ -5,17 +5,9 @@ from faker import Faker
 #Crear una instancia de Faker para generar datos aleatorios
 faker = Faker()
 
-#Establecer las semillas para cursos presenciales
+#Establecer las semillas para cursos
 Faker.seed(288)
-random.seed(288)  
-
-#Establecer las semillas para cursos virtuales
-# Faker.seed(288)
-# random.seed(288)  
-
-#Establecer las semillas para cursos hibridos
-# Faker.seed(288)
-# random.seed(288)  
+random.seed(288)
 
 #Definir los nombres de los campos del archivo CSV
 campos = ['nombre', 'codigo', 'creditos', 'promedioAprobado', 'competencias']
