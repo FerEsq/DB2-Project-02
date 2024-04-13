@@ -152,4 +152,184 @@ CREATE (c:Club:Academico {
 SET c.dias = [dia IN split(row.dias, ';') | trim(dia)]
 RETURN c;
 
+//Importar relaciones INTERACTUA
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/FerEsq/DB2-Project-02/main/data/relations/interactua.csv' AS row
+MATCH (s)
+WHERE id(s) = toInteger(row.nodoInicio)
+MATCH (e)
+WHERE id(e) = toInteger(row.nodoFin)
+CREATE (s)-[r:INTERACTUA {
+    fechaUltimaInteraccion: date(row.fechaUltimaInteraccion),
+    tipoInteraccion: row.tipoInteraccion,
+    frecuencia: toInteger(row.frecuencia)
+    }]->(e)
+RETURN r
 
+//Importar relaciones PUBLICA
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/FerEsq/DB2-Project-02/main/data/relations/publica.csv' AS row
+MATCH (s)
+WHERE id(s) = toInteger(row.nodoInicio)
+MATCH (e)
+WHERE id(e) = toInteger(row.nodoFin)
+CREATE (s)-[r:PUBLICA {
+    fechaPublicación: date(row.fechaPublicación),
+    comentario: row.comentario,
+    recomienda: row.recomienda = 'true'
+    }]->(e)
+RETURN r
+
+//Importar relaciones ASISTE
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/FerEsq/DB2-Project-02/main/data/relations/asiste.csv' AS row
+MATCH (s)
+WHERE id(s) = toInteger(row.nodoInicio)
+MATCH (e)
+WHERE id(e) = toInteger(row.nodoFin)
+CREATE (s)-[r:ASISTE {
+    motivo: row.motivo,
+    confirmado: row.confirmado = 'true',
+    rol: row.rol   
+    }]->(e)
+RETURN r
+
+//Importar relaciones ORGANIZA
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/FerEsq/DB2-Project-02/main/data/relations/organiza.csv' AS row
+MATCH (s)
+WHERE id(s) = toInteger(row.nodoInicio)
+MATCH (e)
+WHERE id(e) = toInteger(row.nodoFin)
+CREATE (s)-[r:ORGANIZA {
+    fechaOrganizacion: date(row.fechaOrganizacion),
+    responsabilidades: split(row.responsabilidades, ';'),
+    puntuacion: toInteger(row.puntuacion) 
+    }]->(e)
+RETURN r
+
+//Importar relaciones IMPARTE
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/FerEsq/DB2-Project-02/main/data/relations/imparte.csv' AS row
+MATCH (s)
+WHERE id(s) = toInteger(row.nodoInicio)
+MATCH (e)
+WHERE id(e) = toInteger(row.nodoFin)
+CREATE (s)-[r:IMPARTE {
+    fechaInicio: date(row.fechaInicio),
+    fechaFin: date(row.fechaFin),
+    semestre: toInteger(row.semestre) 
+    }]->(e)
+RETURN r
+
+//Importar relaciones CURSA
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/FerEsq/DB2-Project-02/main/data/relations/cursa.csv' AS row
+MATCH (s)
+WHERE id(s) = toInteger(row.nodoInicio)
+MATCH (e)
+WHERE id(e) = toInteger(row.nodoFin)
+CREATE (s)-[r:CURSA {
+    año: toInteger(row.año),
+    semestre: toInteger(row.semestre),
+    nota: toFloat(row.nota)
+    }]->(e)
+RETURN r
+
+//Importar relaciones PERTENECE
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/FerEsq/DB2-Project-02/main/data/relations/pertenece.csv' AS row
+MATCH (s)
+WHERE id(s) = toInteger(row.nodoInicio)
+MATCH (e)
+WHERE id(e) = toInteger(row.nodoFin)
+CREATE (s)-[r:PERTENECE {
+    desde: date(row.desde),
+    activo: row.activo = 'true',
+    rol: row.rol
+    }]->(e)
+RETURN r
+
+//Importar relaciones ESTA_EN Usuarios
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/FerEsq/DB2-Project-02/main/data/relations/estaenUsuario.csv' AS row
+MATCH (s)
+WHERE id(s) = toInteger(row.nodoInicio)
+MATCH (e)
+WHERE id(e) = toInteger(row.nodoFin)
+CREATE (s)-[r:ESTA_EN {
+    fecha: date(row.fecha),
+    tipoOcupacion: row.tipoOcupacion,
+    autorizado: row.autorizado = 'true'
+    }]->(e)
+RETURN r
+
+//Importar relaciones ESTA_EN Clubes
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/FerEsq/DB2-Project-02/main/data/relations/estaenClub.csv' AS row
+MATCH (s)
+WHERE id(s) = toInteger(row.nodoInicio)
+MATCH (e)
+WHERE id(e) = toInteger(row.nodoFin)
+CREATE (s)-[r:ESTA_EN {
+    fecha: date(row.fecha),
+    tipoOcupacion: row.tipoOcupacion,
+    autorizado: row.autorizado = 'true'
+    }]->(e)
+RETURN r
+
+//Importar relaciones ES_MIEMBRO
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/FerEsq/DB2-Project-02/main/data/relations/esmiembro.csv' AS row
+MATCH (s)
+WHERE id(s) = toInteger(row.nodoInicio)
+MATCH (e)
+WHERE id(e) = toInteger(row.nodoFin)
+CREATE (s)-[r:ES_MIEMBRO {
+    fechaInscipcion: date(row.fechaInscipcion),
+    status: row.status,
+    frecuencia: toInteger(row.frecuencia)
+    }]->(e)
+RETURN r
+
+//Importar relaciones OCUPA
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/FerEsq/DB2-Project-02/main/data/relations/ocupa.csv' AS row
+MATCH (s)
+WHERE id(s) = toInteger(row.nodoInicio)
+MATCH (e)
+WHERE id(e) = toInteger(row.nodoFin)
+CREATE (s)-[r:OCUPA {
+    dias: split(row.dias, ';'),
+    horaInicio: row.horaInicio,
+    horaFin: row.horaFin
+    }]->(e)
+RETURN r
+
+//Importar relaciones ES_DE
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/FerEsq/DB2-Project-02/main/data/relations/esde.csv' AS row
+MATCH (s)
+WHERE id(s) = toInteger(row.nodoInicio)
+MATCH (e)
+WHERE id(e) = toInteger(row.nodoFin)
+CREATE (s)-[r:ES_DE {
+    desde: date(row.desde),
+    nuevo: row.nuevo = 'true',
+    activo: row.activo = 'true'
+    }]->(e)
+RETURN r
+
+//Importar relaciones REALIZA Facultades
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/FerEsq/DB2-Project-02/main/data/relations/realizaFacultad.csv' AS row
+MATCH (s)
+WHERE id(s) = toInteger(row.nodoInicio)
+MATCH (e)
+WHERE id(e) = toInteger(row.nodoFin)
+CREATE (s)-[r:REALIZA {
+    objetivo: row.objetivo,
+    importancia: row.importancia,
+    recurrente: row.recurrente = 'true'
+    }]->(e)
+RETURN r
+
+//Importar relaciones REALIZA Clubes
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/FerEsq/DB2-Project-02/main/data/relations/realizaClub.csv' AS row
+MATCH (s)
+WHERE id(s) = toInteger(row.nodoInicio)
+MATCH (e)
+WHERE id(e) = toInteger(row.nodoFin)
+CREATE (s)-[r:REALIZA {
+    objetivo: row.objetivo,
+    importancia: row.importancia,
+    recurrente: row.recurrente = 'true'
+    }]->(e)
+RETURN r
