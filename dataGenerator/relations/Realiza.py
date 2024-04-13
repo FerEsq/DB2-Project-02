@@ -16,10 +16,23 @@ campos = ['objetivo', 'importancia', 'recurrente', 'nodoInicio', 'nodoFin']
 #Función para generar datos aleatorios de usuarios
 def relationsGenerator(n):
 
+    objetivos = [
+        "Conectar",
+        "Informar",
+        "Inspirar",
+        "Promover",
+        "Educar",
+        "Fomentar",
+        "Integrar",
+        "Compartir",
+        "Apoyar",
+        "Entretener"
+    ]
+
     #Generar n filas de datos aleatorios
     filas = []
     for _ in range(n):
-        objetivo = faker.text(max_nb_chars=100)
+        objetivo = random.choice(objetivos)
         importancia = random.choice(["Alta", "Media", "Baja"])
         recurrente = random.choice(["true", "false"])
 
