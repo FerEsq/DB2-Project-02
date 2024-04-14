@@ -9,12 +9,12 @@
     </router-link>
       <div class="nav-items">
         <router-link to="/crear" class="nav-item">Crear</router-link>
-        <router-link to="/usuario" class="nav-item">Usuario</router-link>
-        <router-link to="/curso" class="nav-item">Curso</router-link>
-        <router-link to="/evento" class="nav-item">Evento</router-link>
-        <router-link to="/facultad" class="nav-item">Facultad</router-link>
-        <router-link to="/salon" class="nav-item">Salón</router-link>
-        <router-link to="/club" class="nav-item">Club</router-link>
+        <router-link to="/usuario" class="nav-item">Usuarios</router-link>
+        <router-link to="/curso" class="nav-item">Cursos</router-link>
+        <router-link to="/evento" class="nav-item">Eventos</router-link>
+        <router-link to="/facultad" class="nav-item">Facultades</router-link>
+        <router-link to="/salon" class="nav-item">Salones</router-link>
+        <router-link to="/club" class="nav-item">Clubes</router-link>
       </div>
     </nav>
     <router-view/>
