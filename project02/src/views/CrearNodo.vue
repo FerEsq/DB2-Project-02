@@ -54,7 +54,7 @@
                 />
             </div>
             <button @click.prevent="addNewProperty" class="save">Añadir propiedad</button>
-        <button type="submit" class="save" >Guardar</button>
+        <button type="submit" class="save">Crear</button>
       </form>
     </div>
   </div>
