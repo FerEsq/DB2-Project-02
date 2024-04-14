@@ -12,6 +12,7 @@
     <table class="user-table">
       <thead>
         <tr>
+          <th>ID</th>
           <th>Nombre</th>
           <th>Apellido</th>
           <th>Edad</th>
@@ -22,6 +23,7 @@
       </thead>
       <tbody>
         <tr v-for="user in users" :key="user.id">
+          <td>{{ user.id }}</td>
           <td>{{ user.nombre }}</td>
           <td>{{ user.apellido }}</td>
           <td>{{ user.edad }}</td>
@@ -62,19 +64,29 @@ export default {
   },
   methods: {
     fetchUsers() {
-      const session = getSession();
-      return session
-        .run('MATCH (u:Usuario) RETURN u')
-        .then(result => {
-          this.users = result.records.map(record => record.get('u').properties);
-        })
-        .catch(error => {
-          console.error(error);
-        })
-        .finally(() => {
-          session.close();
+    const session = getSession();
+    return session
+      .run('MATCH (u:Usuario) RETURN u, ID(u) as id')
+      .then(result => {
+        this.users = result.records.map(record => {
+          return {
+            id: record.get('id').toNumber(), // Convertir a número si es un Integer de Neo4j
+            nombre: record.get('u').properties.nombre,
+            apellido: record.get('u').properties.apellido,
+            edad: record.get('u').properties.edad,
+            genero: record.get('u').properties.genero,
+            fechaRegistro: record.get('u').properties.fechaRegistro
+            // ... otras propiedades que quieras incluir
+          };
         });
-    },
+      })
+      .catch(error => {
+        console.error(error);
+      })
+      .finally(() => {
+        session.close();
+      });
+  },
     filterNodes() {
       // Suponiendo que `fetchUsers` es el método que obtiene todos los nodos
       this.fetchUsers().then(() => {
@@ -87,9 +99,27 @@ export default {
         }
       });
     },
-    //deleteUser(userId) {
-      // Código para eliminar el nodo usando session.run con una consulta Cypher
-    //},
+    deleteUser(userId) {
+      // Abrir sesión de Neo4j
+      const session = getSession();
+      
+      // Crear y ejecutar la consulta Cypher para eliminar el nodo
+      session.run('MATCH (u:Usuario) WHERE ID(u) = $userId DELETE u', { userId: parseInt(userId) })
+        .then(() => {
+          // Actualiza la lista de usuarios en la interfaz de usuario
+          // Esto es solo necesario si no estás recargando los usuarios desde la base de datos después de una eliminación
+          this.users = this.users.filter(user => user.id !== userId);
+          // Puedes agregar aquí alguna notificación de que la eliminación fue exitosa
+        })
+        .catch(error => {
+          console.error(error);
+          // Manejar errores, por ejemplo, mostrando un mensaje al usuario
+        })
+        .finally(() => {
+          // Cerrar la sesión de Neo4j
+          session.close();
+        });
+    },
     editUser(user) {
       this.$router.push({ name: 'EditUser', params: { userId: user.id } });
     },
