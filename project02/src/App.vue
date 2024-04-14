@@ -1,11 +1,14 @@
 <template>
   <div id="app">
     <nav>
+    <router-link to="/crear" class="noneDec"> 
       <div class="nav-brand">
-        <img src="@/assets/icon.png" alt="Logo" class="logo"/> <!-- Asegúrate de que la ruta al archivo de imagen sea correcta -->
-        UVG Connect
+        <img src="@/assets/icon.png" alt="Logo" class="logo"/> 
+        <span class="brand-text">UVG Connect</span>
       </div>
+    </router-link>
       <div class="nav-items">
+        <router-link to="/crear" class="nav-item">Crear</router-link>
         <router-link to="/usuario" class="nav-item">Usuario</router-link>
         <router-link to="/curso" class="nav-item">Curso</router-link>
         <router-link to="/evento" class="nav-item">Evento</router-link>
@@ -49,7 +52,13 @@ nav {
 .nav-brand {
   font-weight: bold;
   font-size: 1.5rem;
+  color: white !important;
 }
+
+.nav-brand .brand-text {
+  text-decoration: none !important;
+}
+
 
 .nav-items {
   display: flex;
@@ -65,4 +74,9 @@ nav {
 .nav-item:hover, .router-link-exact-active {
   color: #BEDCFE;
 }
+
+.noneDec {
+  text-decoration: none !important;
+}
+
 </style>

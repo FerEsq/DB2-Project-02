@@ -6,9 +6,11 @@ import FacultadLabel from '../views/FacultadLabel.vue';
 import SalonLabel from '../views/SalonLabel.vue';
 import ClubLabel from '../views/ClubLabel.vue';
 import EditarNodo from '../views/EditarNodo.vue';
+import CrearNodo from '../views/CrearNodo.vue';
 
 const routes = [
-  { path: '/', redirect: '/usuario' },
+  { path: '/', redirect: '/crear' },
+  { path: '/crear', component: CrearNodo },
   { path: '/usuario', component: UsuarioLabel },
   { path: '/curso', component: CursoLabel },
   { path: '/evento', component: EventoLabel },
