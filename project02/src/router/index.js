@@ -5,6 +5,7 @@ import EventoLabel from '../views/EventoLabel.vue';
 import FacultadLabel from '../views/FacultadLabel.vue';
 import SalonLabel from '../views/SalonLabel.vue';
 import ClubLabel from '../views/ClubLabel.vue';
+import EditarNodo from '../views/EditarNodo.vue';
 
 const routes = [
   { path: '/', redirect: '/usuario' },
@@ -14,6 +15,9 @@ const routes = [
   { path: '/facultad', component: FacultadLabel },
   { path: '/salon', component: SalonLabel },
   { path: '/club', component: ClubLabel },
+  {path: '/editar/:id', name: 'EditarNodo', component: EditarNodo, props: true
+  }
+  
 ];
 
 const router = createRouter({

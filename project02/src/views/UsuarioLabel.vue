@@ -121,7 +121,8 @@ export default {
         });
     },
     editUser(user) {
-      this.$router.push({ name: 'EditUser', params: { userId: user.id } });
+      //Usar this.$router.push para pasar todo el objeto user como parámetro de estado
+      this.$router.push({ name: 'EditarNodo', params: { id: user.id } });
     },
     navigateToAddUser() {
       this.$router.push({ name: 'AddUser' });
