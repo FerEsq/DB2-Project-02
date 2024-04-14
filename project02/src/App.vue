@@ -30,8 +30,10 @@ export default {
 }
 
 .logo {
-  height: 80px; /* Ajusta esto según el tamaño deseado */
+  height: 60px; /* Ajusta esto según el tamaño deseado */
   margin-right: 10px; /* Añade un poco de margen a la derecha de la imagen */
+  margin-top: 5px;
+  margin-bottom: 5px;
   vertical-align: middle; /* Alinea verticalmente la imagen con el texto */
 }
 
