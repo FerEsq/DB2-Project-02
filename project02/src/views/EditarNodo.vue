@@ -117,7 +117,7 @@ export default {
             .run(query, params)
             .then(() => {
             // Manejar el caso de éxito
-            this.$router.push('/usuario'); // Reemplaza esto con tu ruta deseada
+            this.$router.go(-1); // Reemplaza esto con tu ruta deseada
             })
             .catch(error => {
             // Manejar el caso de error

@@ -100,25 +100,29 @@ export default {
       });
     },
     deleteUser(userId) {
-      // Abrir sesión de Neo4j
       const session = getSession();
-      
-      // Crear y ejecutar la consulta Cypher para eliminar el nodo
-      session.run('MATCH (u:Usuario) WHERE ID(u) = $userId DELETE u', { userId: parseInt(userId) })
-        .then(() => {
-          // Actualiza la lista de usuarios en la interfaz de usuario
-          // Esto es solo necesario si no estás recargando los usuarios desde la base de datos después de una eliminación
-          this.users = this.users.filter(user => user.id !== userId);
-          // Puedes agregar aquí alguna notificación de que la eliminación fue exitosa
-        })
-        .catch(error => {
-          console.error(error);
-          // Manejar errores, por ejemplo, mostrando un mensaje al usuario
-        })
-        .finally(() => {
-          // Cerrar la sesión de Neo4j
-          session.close();
-        });
+
+      // Iniciar una transacción para manejar la eliminación de relaciones y el nodo
+      session.writeTransaction((tx) => {
+        // Primero eliminar todas las relaciones del nodo
+        tx.run('MATCH (u:Usuario)-[r]-() WHERE ID(u) = $userId DELETE r', { userId: parseInt(userId) });
+        
+        // Luego eliminar el nodo
+        return tx.run('MATCH (u:Usuario) WHERE ID(u) = $userId DELETE u', { userId: parseInt(userId) });
+      })
+      .then(() => {
+        // Actualizar la lista de usuarios en la interfaz de usuario
+        this.users = this.users.filter(user => user.id !== userId);
+        // Notificar al usuario de la eliminación exitosa
+      })
+      .catch(error => {
+        console.error('Error al eliminar el nodo:', error);
+        // Manejar errores, por ejemplo, mostrando un mensaje al usuario
+      })
+      .finally(() => {
+        // Cerrar la sesión de Neo4j
+        session.close();
+      });
     },
     editUser(user) {
       //Usar this.$router.push para pasar todo el objeto user como parámetro de estado
