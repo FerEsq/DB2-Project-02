@@ -16,7 +16,7 @@
       </form>
     </div>
     <div v-else>
-      <p>Cargando datos del nodo...</p>
+      <p class="charging">Cargando propiedades del nodo...</p>
     </div>
   </div>
 </template>
@@ -132,6 +132,17 @@ export default {
   margin-top: 1rem;
   font-family: Verdana, Geneva, sans-serif;
   font-size: 30px;
+  margin-left: 1%;
+  font-weight: bold;
+  color: #226946;
+  margin-bottom: 2%;
+}
+
+.charging {
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 20px;
   margin-left: 1%;
   font-weight: bold;
   color: #226946;

@@ -88,12 +88,12 @@ export default {
       });
   },
     filterNodes() {
-      // Suponiendo que `fetchUsers` es el método que obtiene todos los nodos
       this.fetchUsers().then(() => {
         if (this.searchQuery) {
           this.users = this.users.filter((user) => {
             return Object.values(user).some(
-              (prop) => prop.toString().includes(this.searchQuery)
+              // Solo convierte en string si el valor no es undefined
+              (prop) => prop !== undefined && prop.toString().includes(this.searchQuery)
             );
           });
         }
