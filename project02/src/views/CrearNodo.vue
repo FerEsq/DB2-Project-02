@@ -178,6 +178,7 @@ export default {
 input[type="checkbox"] {
   margin-right: 5px; 
   color: #226946 !important;
+  margin-left: 1%;
 }
 
 .select {
