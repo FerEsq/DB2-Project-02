@@ -1,6 +1,13 @@
 <template>
   <div>
     <h1 class="title">Usuarios</h1>
+    <input
+      v-model="searchQuery"
+      @input="filterNodes"
+      placeholder="Buscar..."
+      type="text"
+      class="search-input"
+    />
     <button class="add" @click="navigateToAddUser">Agregar Nodo</button>
     <table class="user-table">
       <thead>
@@ -46,6 +53,7 @@ export default {
   name: 'UsuarioLabel',
   data() {
     return {
+      searchQuery: '',
       users: [],
     }
   },
@@ -55,7 +63,7 @@ export default {
   methods: {
     fetchUsers() {
       const session = getSession();
-      session
+      return session
         .run('MATCH (u:Usuario) RETURN u')
         .then(result => {
           this.users = result.records.map(record => record.get('u').properties);
@@ -66,6 +74,18 @@ export default {
         .finally(() => {
           session.close();
         });
+    },
+    filterNodes() {
+      // Suponiendo que `fetchUsers` es el método que obtiene todos los nodos
+      this.fetchUsers().then(() => {
+        if (this.searchQuery) {
+          this.users = this.users.filter((user) => {
+            return Object.values(user).some(
+              (prop) => prop.toString().includes(this.searchQuery)
+            );
+          });
+        }
+      });
     },
     //deleteUser(userId) {
       // Código para eliminar el nodo usando session.run con una consulta Cypher
@@ -97,12 +117,21 @@ export default {
   font-size: 15px;
   margin-left: 1%;
   font-weight: bold;
-  padding: 5px 10px;
+  padding: 11px 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   background-color: #226946;
   color: white;
+}
+
+.search-input {
+  width: 85.5%;
+  margin-left: 1% !important;
+  padding: 0.5rem;
+  margin: 1rem 0;
+  border: 2px solid #226946;
+  border-radius: 4px;
 }
 
 .user-table {
