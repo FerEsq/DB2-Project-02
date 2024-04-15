@@ -129,7 +129,7 @@ export default {
       this.$router.push({ name: 'EditarNodo', params: { id: user.id } });
     },
     navigateToAddUser() {
-      this.$router.push({ name: 'AddUser' });
+      this.$router.push('/crear');
     },
   },
 }
