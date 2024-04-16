@@ -292,7 +292,6 @@ export default {
 }
 
 .save {
-  margin-top: 1rem;
   font-family: Verdana, Geneva, sans-serif;
   font-size: 15px;
   margin-left: 1%;

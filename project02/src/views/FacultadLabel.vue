@@ -8,7 +8,13 @@
       type="text"
       class="search-input"
     />
-    <button class="add" @click="navigateToAddUser">Agregar Nodo</button>
+    <button class="add" @click="deleteMultiplesNodes">Eliminar rango de nodos</button>
+    <select v-model="startNode" id="startNode" class="select-nodes">
+      <option v-for="id in userIDs" :key="id" :value="id">{{ id }}</option>
+    </select>
+    <select v-model="endNode" id="endNode" class="select-nodes">
+      <option v-for="id in userIDs" :key="id" :value="id">{{ id }}</option>
+    </select>
     <table class="user-table">
       <thead>
         <tr>
@@ -57,6 +63,9 @@ export default {
     return {
       searchQuery: '',
       users: [],
+      startNode: null,
+      endNode: null,
+      usersIDs: []
     }
   },
   created() {
@@ -68,6 +77,7 @@ export default {
     return session
       .run('MATCH (u:Facultad) RETURN u, ID(u) as id')
       .then(result => {
+        this.userIDs = result.records.map(record => record.get('id').toNumber());
         this.users = result.records.map(record => {
           return {
             id: record.get('id').toNumber(), // Convertir a número si es un Integer de Neo4j
@@ -110,6 +120,7 @@ export default {
           // Esto es solo necesario si no estás recargando los usuarios desde la base de datos después de una eliminación
           this.users = this.users.filter(user => user.id !== userId);
           // Puedes agregar aquí alguna notificación de que la eliminación fue exitosa
+          alert('Nodo con ID ' + userId + ' eliminado con éxito!');
         })
         .catch(error => {
           console.error(error);
@@ -126,6 +137,36 @@ export default {
     },
     navigateToAddUser() {
       this.$router.push('/crear');
+    },
+    deleteMultiplesNodes() {
+      const session = getSession();
+      const startNode = this.startNode;
+      const endNode = this.endNode;
+
+      if (startNode == null || endNode == null || startNode > endNode) {
+        alert('Rango de IDs no válido.');
+        return;
+      }
+
+      let deleteQuery = `
+        MATCH (n)
+        WHERE ID(n) >= $startNode AND ID(n) <= $endNode
+        DETACH DELETE n
+      `;
+
+      session.run(deleteQuery, { startNode, endNode })
+        .then(() => {
+          alert('Nodos eliminados con éxito!');
+          //Reflejar que los nodos han sido eliminados
+          this.fetchUsers();
+        })
+        .catch(error => {
+          console.error('Error al eliminar nodos:', error);
+          alert('Error al eliminar nodos. Verifique que no tengan relaciones.');
+        })
+        .finally(() => {
+          session.close();
+        });
     },
   },
 }
@@ -157,11 +198,21 @@ export default {
 }
 
 .search-input {
-  width: 85.5%;
+  width: 61% !important;
   margin-left: 1% !important;
   padding: 0.5rem;
   margin: 1rem 0;
   border: 2px solid #226946;
+  border-radius: 4px;
+}
+
+.select-nodes {
+  display: inline-block !important;
+  width: 8% !important;
+  height: 44.5px !important;
+  margin-left: 1% !important;
+  margin: 1rem 0;
+  border: 2px solid #226946 !important;
   border-radius: 4px;
 }
 
@@ -216,6 +267,5 @@ export default {
   height: 1em; /* O el tamaño que prefieras */
   width: 1em; /* Mantén la misma altura y ancho para preservar la proporción */
 }
-
 
 </style>
