@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1 class="title">Salones</h1>
+    <p class="available"> Salones disponibles: {{ actives }} </p>
     <input
       v-model="searchQuery"
       @input="filterNodes"
@@ -66,11 +67,13 @@ export default {
       startNode: null,
       endNode: null,
       usersIDs: [],
+      actives: 0,
 
     }
   },
   created() {
     this.fetchUsers();
+    this.getAvailableSalons();
   },
   methods: {
     fetchUsers() {
@@ -173,6 +176,25 @@ export default {
           session.close();
         });
     },
+    getAvailableSalons() {
+      const session = getSession();
+      const query = `
+        MATCH (s:Salon)
+        WHERE s.disponible = true
+        RETURN count(s) AS availableSalons
+      `;
+
+      session.run(query)
+        .then(result => {
+          this.actives = result.records[0].get('availableSalons').toNumber();
+        })
+        .catch(error => {
+          console.error('Error al contar los salones disponibles:', error);
+        })
+        .finally(() => {
+          session.close();
+        });
+    },
   },
 }
 </script>
@@ -185,6 +207,15 @@ export default {
   font-size: 30px;
   margin-left: 1%;
   font-weight: bold;
+  color: #226946;
+}
+
+.available {
+  border-collapse: collapse;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 16px;
+  margin-left: 1%;
+  font-weight: 900;
   color: #226946;
 }
 
