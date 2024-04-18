@@ -349,6 +349,11 @@ export default {
   display: inline-block !important;
 }
 
+.save:disabled {
+  background-color: #ABC4AB;
+  cursor: not-allowed;
+}
+
 .no-save {
   font-family: Verdana, Geneva, sans-serif;
   font-size: 15px;

@@ -7,12 +7,12 @@ import SalonLabel from '../views/SalonLabel.vue';
 import ClubLabel from '../views/ClubLabel.vue';
 import EditarNodo from '../views/EditarNodo.vue';
 import CrearNodo from '../views/CrearNodo.vue';
-import CrearRelacion from '../views/CrearRelacion.vue';
+import GestionarRelaciones from '../views/GestionarRelaciones.vue';
 
 const routes = [
   { path: '/', redirect: '/crear' },
   { path: '/crear', component: CrearNodo },
-  { path: '/relacion', component: CrearRelacion },
+  { path: '/gestionarRelaciones', component: GestionarRelaciones },
   { path: '/usuario', component: UsuarioLabel },
   { path: '/curso', component: CursoLabel },
   { path: '/evento', component: EventoLabel },
