@@ -49,10 +49,10 @@
     </div>
     <div class="relations-group">
       <div v-for="(relacion, index) in relaciones" :key="index">
-        <h2>Editar relación {{ index + 1 }}</h2>
+        <h1 class="title">Editar relación {{ index + 1 }}</h1>
         <crear-relacion :nodo-origen="id" :relacion-inicial="relacion"></crear-relacion>
       </div>
-      <h2>Agregar nueva relación</h2>
+      <h1 class="title">Agregar nueva relación</h1>
       <crear-relacion :nodo-origen="id"></crear-relacion>
     </div>
   </div>
@@ -268,9 +268,23 @@ export default {
 </script>
 
 <style>
+
+.edit-container {
+  margin-bottom: 1rem;
+  width: 98% !important;
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
 .form-group {
   margin-bottom: 1rem;
-  width: 100%;
+  width: 98% !important;
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .title {
@@ -299,7 +313,7 @@ export default {
   border-collapse: collapse;
   font-family: Verdana, Geneva, sans-serif;
   font-size: 16px;
-  margin-left: 1%;
+  /*margin-left: 1%;*/
   font-weight: 900;
   color: #226946;
 }
@@ -334,7 +348,7 @@ export default {
 .save {
   font-family: Verdana, Geneva, sans-serif;
   font-size: 15px;
-  margin-left: 1%;
+  margin-left: 1.5% !important;
   font-weight: bold;
   padding: 11px 10px;
   border: none;

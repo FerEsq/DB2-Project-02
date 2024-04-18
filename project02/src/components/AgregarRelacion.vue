@@ -1,58 +1,60 @@
 <template>
     <div>
-      <h1 v-if="relacionInicial">Crear nueva relación</h1>
+      <label v-if="relacionInicial" class="subtitle">Crear nueva relación</label>
       <form @submit.prevent="crearRelacion">
-        <label>
+        <label class="page-text">
           Nodo de origen:
-          <input type="text" :value="nodoOrigen" disabled>
+          <input type="text" :value="nodoOrigen" disabled class="text-elements">
         </label>
-        <label>
+        <label class="page-text">
           Etiqueta Nodo destino:
-          <select v-model="etiquetaNodoDestino" @change="obtenerNodosDestino" :disabled="relacionInicial">
+          <select v-model="etiquetaNodoDestino" @change="obtenerNodosDestino" :disabled="relacionInicial" class="text-elements">
             <option v-for="etiqueta in etiquetas" :key="etiqueta" :value="etiqueta">{{ etiqueta }}</option>
           </select>
         </label>
-        <label>
+        <label class="page-text">
           Nodo destino:
-          <select v-model="nodoDestino" :disabled="relacionInicial">
+          <select v-model="nodoDestino" :disabled="relacionInicial" class="text-elements">
             <option v-for="nodo in nodosDestino" :key="nodo.id" :value="nodo.identity.low">{{ nodo.identity.low }}</option>
           </select>
         </label>
-        <label>
+        <label class="page-text">
           Tipo de relación:
-          <select v-model="tipoRelacion" :disabled="relacionInicial">
+          <select v-model="tipoRelacion" :disabled="relacionInicial" class="text-elements">
             <option v-for="relacion in relaciones" :key="relacion" :value="relacion">{{ relacion }}</option>
           </select>
         </label>
         <div v-for="(valor, nombre) in propiedades" :key="nombre" class="props">
-            <label>
-                {{ nombre }}:
-                <input :type="obtenerTipoInput(valor)" v-model="propiedades[nombre]" step="any" required>
-                <button @click.prevent="deleteProperty(nombre)">
-                  <svg class="trash" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
-                    <path d="M14 10V17M10 10V17M6 6V17.8C6 18.9201 6 19.4798 6.21799 19.9076C6.40973 20.2839 6.71547 20.5905 7.0918 20.7822C7.5192 21 8.07899 21 9.19691 21H14.8031C15.921 21 16.48 21 16.9074 20.7822C17.2837 20.5905 17.5905 20.2839 17.7822 19.9076C18 19.4802 18 18.921 18 17.8031V6M6 6H8M6 6H4M8 6H16M8 6C8 5.06812 8 4.60241 8.15224 4.23486C8.35523 3.74481 8.74432 3.35523 9.23438 3.15224C9.60192 3 10.0681 3 11 3H13C13.9319 3 14.3978 3 14.7654 3.15224C15.2554 3.35523 15.6447 3.74481 15.8477 4.23486C15.9999 4.6024 16 5.06812 16 6M16 6H18M18 6H20" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
+            <label class="page-text">
+                {{ nombre }}
             </label>
+            <input class="text-properties" :type="obtenerTipoInput(valor)" v-model="propiedades[nombre]" step="any" required>
+              <button @click.prevent="deleteProperty(nombre)" class="delete">
+                <svg class="trash" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
+                  <path d="M14 10V17M10 10V17M6 6V17.8C6 18.9201 6 19.4798 6.21799 19.9076C6.40973 20.2839 6.71547 20.5905 7.0918 20.7822C7.5192 21 8.07899 21 9.19691 21H14.8031C15.921 21 16.48 21 16.9074 20.7822C17.2837 20.5905 17.5905 20.2839 17.7822 19.9076C18 19.4802 18 18.921 18 17.8031V6M6 6H8M6 6H4M8 6H16M8 6C8 5.06812 8 4.60241 8.15224 4.23486C8.35523 3.74481 8.74432 3.35523 9.23438 3.15224C9.60192 3 10.0681 3 11 3H13C13.9319 3 14.3978 3 14.7654 3.15224C15.2554 3.35523 15.6447 3.74481 15.8477 4.23486C15.9999 4.6024 16 5.06812 16 6M16 6H18M18 6H20" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
         </div>
         <div v-for="(propiedad, index) in nuevasPropiedades" :key="index">
-            <input type="text" v-model="propiedad.key" placeholder="Nombre de la propiedad">
-            <input type="text" v-model="propiedad.value" placeholder="Valor de la propiedad">
-            <button @click.prevent="eliminarPropiedad(index)">
+            <input class="text-properties" type="text" v-model="propiedad.key" placeholder="Nombre de la propiedad">
+            <input class="text-properties" type="text" v-model="propiedad.value" placeholder="Valor de la propiedad">
+            <button @click.prevent="eliminarPropiedad(index)" class="delete">
                 <svg class="trash" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
                     <path d="M14 10V17M10 10V17M6 6V17.8C6 18.9201 6 19.4798 6.21799 19.9076C6.40973 20.2839 6.71547 20.5905 7.0918 20.7822C7.5192 21 8.07899 21 9.19691 21H14.8031C15.921 21 16.48 21 16.9074 20.7822C17.2837 20.5905 17.5905 20.2839 17.7822 19.9076C18 19.4802 18 18.921 18 17.8031V6M6 6H8M6 6H4M8 6H16M8 6C8 5.06812 8 4.60241 8.15224 4.23486C8.35523 3.74481 8.74432 3.35523 9.23438 3.15224C9.60192 3 10.0681 3 11 3H13C13.9319 3 14.3978 3 14.7654 3.15224C15.2554 3.35523 15.6447 3.74481 15.8477 4.23486C15.9999 4.6024 16 5.06812 16 6M16 6H18M18 6H20" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </button>
         </div>
 
-        <button @click.prevent="agregarPropiedad">Agregar propiedad</button>
-        <button type="submit" :disabled="!hayCambios">{{ textoBoton }}</button>
+        <div class="botoncitos">
+          <button class="save" @click.prevent="agregarPropiedad">Agregar propiedad</button>
+          <button class="save" type="submit" :disabled="!hayCambios">{{ textoBoton }}</button>
+        </div>
       </form>
-      <button v-if="relacionInicial" @click="mostrarDialogoEliminar = true">Eliminar relación</button>
+      <button class="no-save" v-if="relacionInicial" @click="mostrarDialogoEliminar = true">Eliminar relación</button>
       <div v-if="mostrarDialogoEliminar">
         ¿Estás seguro de que quieres eliminar esta relación?
-        <button @click="eliminarRelacion">Aceptar</button>
-        <button @click="mostrarDialogoEliminar = false">Cancelar</button>
+        <button @click="eliminarRelacion" class="save">Aceptar</button>
+        <button @click="mostrarDialogoEliminar = false" class="save">Cancelar</button>
       </div>
     </div>
   </template>
@@ -150,6 +152,7 @@ export default {
     },
     obtenerNodosDestino() {
       const session = getSession();
+      console.log('Etiqueta nodo destino:', this.etiquetaNodoDestino);
       const query = `MATCH (n:${this.etiquetaNodoDestino}) RETURN n`;
       session.run(query)
         .then((result) => {
@@ -299,11 +302,86 @@ export default {
 </script>
 
 <style scoped>
+.subtitle {
+  border-collapse: collapse;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 20px;
+  /*margin-left: 1%;*/
+  font-weight: 900;
+  color: #226946;
+}
+
+.page-text{
+  display: block !important;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 15px;
+  /*margin-left: 1%;*/
+  color: #226946;
+}
+
+.text-elements {
+  display: inline-block !important;
+  height: 40px !important;
+  border: 2px solid #226946 !important;
+  border-radius: 4px;
+}
+
+.text-properties {
+  display: inline-block !important;
+  width: 94% !important;
+  margin: 1rem 0;
+  border: 2px solid #226946 !important;
+  border-radius: 4px;
+}
+
+.save {
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 15px;
+  margin-left: 1.5% !important;
+  font-weight: bold;
+  padding: 11px 10px !important;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #226946;
+  color: white;
+  margin-bottom: 2%;
+  display: inline-block !important;
+}
+
+.no-save {
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 15px;
+  margin-left: 1.5% !important;
+  font-weight: bold;
+  padding: 11px 10px !important;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #D52941 !important;
+  color: white;
+  margin-bottom: 2%;
+  display: inline-block !important;
+}
+
+.no-save:disabled {
+  background-color: #ABC4AB;
+}
+
 div {
   margin: 20px;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+.botoncitos {
+  display: inline-block !important;
+  margin: 0px;
+  padding: 0px;
+  border: 0px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
 }
 
 h1 {
@@ -327,17 +405,6 @@ input {
   border-radius: 5px;
 }
 
-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: #007BFF;
-  color: white;
-  cursor: pointer;
-}
 
-button:disabled {
-  background-color: #ccc;
-}
 
 </style>
