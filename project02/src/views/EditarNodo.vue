@@ -47,14 +47,26 @@
     <div v-else>
       <p class="charging">Cargando propiedades del nodo...</p>
     </div>
+    <div class="relations-group">
+      <div v-for="(relacion, index) in relaciones" :key="index">
+        <h2>Editar relación {{ index + 1 }}</h2>
+        <crear-relacion :nodo-origen="id" :relacion-inicial="relacion"></crear-relacion>
+      </div>
+      <h2>Agregar nueva relación</h2>
+      <crear-relacion :nodo-origen="id"></crear-relacion>
+    </div>
   </div>
 </template>
 
 <script>
 import { getSession } from '../Neo4j'; // Asegúrate de que este sea el camino correcto para tu configuración
+import AgregarRelacion from '@/components/AgregarRelacion.vue';
 
 export default {
   name: 'EditarNodo',
+  components: {
+    'crear-relacion': AgregarRelacion,
+  },
   props: {
     id: {
       type: Number, // O String, dependiendo del tipo de dato que sea el ID
@@ -66,13 +78,41 @@ export default {
       nodeProperties: {}, // Aquí se almacenarán las propiedades del nodo
       newProperties: [],
       applyToNodes: 0, // Para guardar el número seleccionado del dropdown
+      relaciones: [], // Aquí se almacenarán las relaciones del nodo
     };
   },
   created() {
     console.log('El ID recibido es:', this.id);
     this.fetchNode();
+    this.fetchNode();
+    this.fetchRelations();
   },
   methods: {
+    fetchRelations() {
+      const session = getSession();
+      const query = `
+        MATCH (a)-[r]->(m)
+        WHERE ID(a) = toInteger($id)
+        RETURN r,m
+      `;
+      const params = {
+        id: this.id,
+      };
+
+      session.run(query, params)
+        .then((result) => {
+          // console.log('Relaciones encontradas:', result.records);
+          this.relaciones = result.records.map(record => {
+            return { relation: record.get('r'), relatedNode: record.get('m') };
+            });
+        })
+        .catch((error) => {
+          console.error('Error al obtener las relaciones:', error);
+        })
+        .finally(() => {
+          session.close();
+        });
+    },
     fetchNode() {
       const session = getSession();
       const numericId = parseInt(this.id);
