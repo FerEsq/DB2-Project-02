@@ -8,7 +8,7 @@
       </div>
     </router-link>
       <div class="nav-items">
-        <router-link to="/crear" class="nav-item">Crear</router-link>
+        <router-link to="/crear" class="nav-item">Crear nodo</router-link>
         <router-link to="/relacion" class="nav-item">Crear relacion</router-link>
         <router-link to="/usuario" class="nav-item">Usuarios</router-link>
         <router-link to="/curso" class="nav-item">Cursos</router-link>
